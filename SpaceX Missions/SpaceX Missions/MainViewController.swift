@@ -6,9 +6,11 @@
 //  Copyright © 2020 Oliver Paray. All rights reserved.
 //
 
+import RxSwift
+import RxCocoa
 import UIKit
 
-class ViewController: UIViewController {
+class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
