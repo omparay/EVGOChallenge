@@ -13,6 +13,17 @@ import UIKit
 
 class MainViewController: UIViewController {
 
+    //Outlets
+    @IBOutlet weak var instructionLabel: UILabel!
+    @IBOutlet weak var criteriaSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var searchTextField: UITextField!
+    @IBOutlet weak var resultsLabel: UILabel!
+    @IBOutlet weak var resultsTableView: UITableView!
+
+    //Properties
+    let disposebag = DisposeBag()
+    let viewModel = MainViewModel()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
