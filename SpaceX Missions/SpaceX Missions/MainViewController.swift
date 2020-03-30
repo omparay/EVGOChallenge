@@ -16,7 +16,7 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        Network.shared.apollo.fetch(query: LaunchesQuery()) { result in
+        Network.shared.apollo.fetch(query: LaunchesByYearQuery(year: "15")) { result in
             switch result {
                 case .success(let data):
                 debugPrint("Data: \(data)")

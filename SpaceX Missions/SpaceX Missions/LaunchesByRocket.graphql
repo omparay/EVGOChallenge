@@ -1,0 +1,12 @@
+query LaunchesByRocket($name: String!) {
+  launchesPast(find: {rocket_name: $name}) {
+    mission_name
+    links {
+      video_link
+    }
+    launch_date_utc
+    rocket {
+      rocket_name
+    }
+  }
+}

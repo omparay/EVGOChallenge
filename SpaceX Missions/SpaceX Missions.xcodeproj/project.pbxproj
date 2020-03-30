@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A75275582431C92C00F06F8F /* LaunchesByRocket.graphql in Resources */ = {isa = PBXBuildFile; fileRef = A75275572431C92C00F06F8F /* LaunchesByRocket.graphql */; };
 		A7921C0E2430A5DE002BB9F2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7921C0D2430A5DE002BB9F2 /* AppDelegate.swift */; };
 		A7921C102430A5DE002BB9F2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7921C0F2430A5DE002BB9F2 /* SceneDelegate.swift */; };
 		A7921C122430A5DE002BB9F2 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7921C112430A5DE002BB9F2 /* MainViewController.swift */; };
@@ -41,6 +42,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A75275552431C8E500F06F8F /* LaunchesByYear.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = LaunchesByYear.graphql; sourceTree = "<group>"; };
+		A75275562431C90F00F06F8F /* LaunchesByMission.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = LaunchesByMission.graphql; sourceTree = "<group>"; };
+		A75275572431C92C00F06F8F /* LaunchesByRocket.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = LaunchesByRocket.graphql; sourceTree = "<group>"; };
 		A7921C0A2430A5DE002BB9F2 /* SpaceX Missions.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SpaceX Missions.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7921C0D2430A5DE002BB9F2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A7921C0F2430A5DE002BB9F2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -124,6 +128,9 @@
 				A7921C1B2430A5DF002BB9F2 /* Info.plist */,
 				A7C4691E2431354000828B59 /* schema.json */,
 				A7C4691A24312C9E00828B59 /* Launches.graphql */,
+				A75275552431C8E500F06F8F /* LaunchesByYear.graphql */,
+				A75275562431C90F00F06F8F /* LaunchesByMission.graphql */,
+				A75275572431C92C00F06F8F /* LaunchesByRocket.graphql */,
 				A7C4691F2431A15900828B59 /* Network.swift */,
 			);
 			path = "SpaceX Missions";
@@ -264,6 +271,7 @@
 				A7921C1A2430A5DF002BB9F2 /* LaunchScreen.storyboard in Resources */,
 				A7921C172430A5DF002BB9F2 /* Assets.xcassets in Resources */,
 				A7921C152430A5DE002BB9F2 /* Main.storyboard in Resources */,
+				A75275582431C92C00F06F8F /* LaunchesByRocket.graphql in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
