@@ -2,6 +2,12 @@ query Launches
 {
   launchesPast {
     mission_name
+    links {
+      video_link
+    }
     launch_date_utc
+    rocket {
+      rocket_name
+    }
   }
 }
