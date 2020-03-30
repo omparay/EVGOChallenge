@@ -20,6 +20,7 @@
 		A7921C442430A87B002BB9F2 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = A7921C432430A87B002BB9F2 /* Apollo */; };
 		A7C4691924312C0900828B59 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C4691824312C0900828B59 /* MainViewModel.swift */; };
 		A7C4691D24312E5D00828B59 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C4691C24312E5D00828B59 /* API.swift */; };
+		A7C469202431A15900828B59 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C4691F2431A15900828B59 /* Network.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,7 @@
 		A7C4691A24312C9E00828B59 /* Launches.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = Launches.graphql; sourceTree = "<group>"; };
 		A7C4691C24312E5D00828B59 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		A7C4691E2431354000828B59 /* schema.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = schema.json; sourceTree = "<group>"; };
+		A7C4691F2431A15900828B59 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +124,7 @@
 				A7921C1B2430A5DF002BB9F2 /* Info.plist */,
 				A7C4691E2431354000828B59 /* schema.json */,
 				A7C4691A24312C9E00828B59 /* Launches.graphql */,
+				A7C4691F2431A15900828B59 /* Network.swift */,
 			);
 			path = "SpaceX Missions";
 			sourceTree = "<group>";
@@ -297,7 +300,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Go to the build root and search up the chain to find the Derived Data Path where the source packages are checked out.\nDERIVED_DATA_CANDIDATE=\"${BUILD_ROOT}\"\n\nwhile ! [ -d \"${DERIVED_DATA_CANDIDATE}/SourcePackages\" ]; do\n  if [ \"${DERIVED_DATA_CANDIDATE}\" = / ]; then\n    echo >&2 \"error: Unable to locate SourcePackages directory from BUILD_ROOT: '${BUILD_ROOT}'\"\n    exit 1\n  fi\n\n  DERIVED_DATA_CANDIDATE=\"$(dirname \"${DERIVED_DATA_CANDIDATE}\")\"\ndone\n\n# Grab a reference to the directory where scripts are checked out\nSCRIPT_PATH=\"${DERIVED_DATA_CANDIDATE}/SourcePackages/checkouts/apollo-ios/scripts\"\n\nif [ -z \"${SCRIPT_PATH}\" ]; then\n    echo >&2 \"error: Couldn't find the CLI script in your checked out SPM packages; make sure to add the framework to your project.\"\n    exit 1\nfi\n\ncd \"${SRCROOT}/${TARGET_NAME}\"\n#\"${SCRIPT_PATH}\"/run-bundled-codegen.sh schema:download --endpoint=\"https://api.spacex.land/graphql/\"\n\"${SCRIPT_PATH}\"/run-bundled-codegen.sh codegen:generate --target=swift --includes=./**/*.graphql --localSchemaFile=\"schema.json\" API.swift\n";
+			shellScript = "# Go to the build root and search up the chain to find the Derived Data Path where the source packages are checked out.\nDERIVED_DATA_CANDIDATE=\"${BUILD_ROOT}\"\n\nwhile ! [ -d \"${DERIVED_DATA_CANDIDATE}/SourcePackages\" ]; do\n  if [ \"${DERIVED_DATA_CANDIDATE}\" = / ]; then\n    echo >&2 \"error: Unable to locate SourcePackages directory from BUILD_ROOT: '${BUILD_ROOT}'\"\n    exit 1\n  fi\n\n  DERIVED_DATA_CANDIDATE=\"$(dirname \"${DERIVED_DATA_CANDIDATE}\")\"\ndone\n\n# Grab a reference to the directory where scripts are checked out\nSCRIPT_PATH=\"${DERIVED_DATA_CANDIDATE}/SourcePackages/checkouts/apollo-ios/scripts\"\n\nif [ -z \"${SCRIPT_PATH}\" ]; then\n    echo >&2 \"error: Couldn't find the CLI script in your checked out SPM packages; make sure to add the framework to your project.\"\n    exit 1\nfi\n\ncd \"${SRCROOT}/${TARGET_NAME}\"\n\"${SCRIPT_PATH}\"/run-bundled-codegen.sh schema:download --endpoint=\"https://api.spacex.land/graphql/\"\n\"${SCRIPT_PATH}\"/run-bundled-codegen.sh codegen:generate --target=swift --includes=./**/*.graphql --localSchemaFile=\"schema.json\" API.swift\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -308,6 +311,7 @@
 			files = (
 				A7921C122430A5DE002BB9F2 /* MainViewController.swift in Sources */,
 				A7921C0E2430A5DE002BB9F2 /* AppDelegate.swift in Sources */,
+				A7C469202431A15900828B59 /* Network.swift in Sources */,
 				A7921C102430A5DE002BB9F2 /* SceneDelegate.swift in Sources */,
 				A7C4691924312C0900828B59 /* MainViewModel.swift in Sources */,
 				A7C4691D24312E5D00828B59 /* API.swift in Sources */,

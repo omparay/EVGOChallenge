@@ -12,15 +12,7 @@ public final class LaunchesQuery: GraphQLQuery {
       launchesPast {
         __typename
         mission_name
-        rocket {
-          __typename
-          rocket_name
-        }
         launch_date_utc
-        launch_site {
-          __typename
-          site_name
-        }
       }
     }
     """
@@ -62,9 +54,7 @@ public final class LaunchesQuery: GraphQLQuery {
       public static let selections: [GraphQLSelection] = [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("mission_name", type: .scalar(String.self)),
-        GraphQLField("rocket", type: .object(Rocket.selections)),
         GraphQLField("launch_date_utc", type: .scalar(String.self)),
-        GraphQLField("launch_site", type: .object(LaunchSite.selections)),
       ]
 
       public private(set) var resultMap: ResultMap
@@ -73,8 +63,8 @@ public final class LaunchesQuery: GraphQLQuery {
         self.resultMap = unsafeResultMap
       }
 
-      public init(missionName: String? = nil, rocket: Rocket? = nil, launchDateUtc: String? = nil, launchSite: LaunchSite? = nil) {
-        self.init(unsafeResultMap: ["__typename": "Launch", "mission_name": missionName, "rocket": rocket.flatMap { (value: Rocket) -> ResultMap in value.resultMap }, "launch_date_utc": launchDateUtc, "launch_site": launchSite.flatMap { (value: LaunchSite) -> ResultMap in value.resultMap }])
+      public init(missionName: String? = nil, launchDateUtc: String? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Launch", "mission_name": missionName, "launch_date_utc": launchDateUtc])
       }
 
       public var __typename: String {
@@ -95,104 +85,12 @@ public final class LaunchesQuery: GraphQLQuery {
         }
       }
 
-      public var rocket: Rocket? {
-        get {
-          return (resultMap["rocket"] as? ResultMap).flatMap { Rocket(unsafeResultMap: $0) }
-        }
-        set {
-          resultMap.updateValue(newValue?.resultMap, forKey: "rocket")
-        }
-      }
-
       public var launchDateUtc: String? {
         get {
           return resultMap["launch_date_utc"] as? String
         }
         set {
           resultMap.updateValue(newValue, forKey: "launch_date_utc")
-        }
-      }
-
-      public var launchSite: LaunchSite? {
-        get {
-          return (resultMap["launch_site"] as? ResultMap).flatMap { LaunchSite(unsafeResultMap: $0) }
-        }
-        set {
-          resultMap.updateValue(newValue?.resultMap, forKey: "launch_site")
-        }
-      }
-
-      public struct Rocket: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["LaunchRocket"]
-
-        public static let selections: [GraphQLSelection] = [
-          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLField("rocket_name", type: .scalar(String.self)),
-        ]
-
-        public private(set) var resultMap: ResultMap
-
-        public init(unsafeResultMap: ResultMap) {
-          self.resultMap = unsafeResultMap
-        }
-
-        public init(rocketName: String? = nil) {
-          self.init(unsafeResultMap: ["__typename": "LaunchRocket", "rocket_name": rocketName])
-        }
-
-        public var __typename: String {
-          get {
-            return resultMap["__typename"]! as! String
-          }
-          set {
-            resultMap.updateValue(newValue, forKey: "__typename")
-          }
-        }
-
-        public var rocketName: String? {
-          get {
-            return resultMap["rocket_name"] as? String
-          }
-          set {
-            resultMap.updateValue(newValue, forKey: "rocket_name")
-          }
-        }
-      }
-
-      public struct LaunchSite: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["LaunchSite"]
-
-        public static let selections: [GraphQLSelection] = [
-          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLField("site_name", type: .scalar(String.self)),
-        ]
-
-        public private(set) var resultMap: ResultMap
-
-        public init(unsafeResultMap: ResultMap) {
-          self.resultMap = unsafeResultMap
-        }
-
-        public init(siteName: String? = nil) {
-          self.init(unsafeResultMap: ["__typename": "LaunchSite", "site_name": siteName])
-        }
-
-        public var __typename: String {
-          get {
-            return resultMap["__typename"]! as! String
-          }
-          set {
-            resultMap.updateValue(newValue, forKey: "__typename")
-          }
-        }
-
-        public var siteName: String? {
-          get {
-            return resultMap["site_name"] as? String
-          }
-          set {
-            resultMap.updateValue(newValue, forKey: "site_name")
-          }
         }
       }
     }

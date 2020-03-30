@@ -16,19 +16,14 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        guard let url = URL(string: "https://api.spacex.land/") else {
-            print("Failed to generate URL...")
-            return
-        }
-        print("Executing query...")
-        let apollo = ApolloClient(url: url)
-        apollo.fetch(query: LaunchesQuery(), cachePolicy: .fetchIgnoringCacheCompletely) { (result) in
-            switch result{
+        Network.shared.apollo.fetch(query: LaunchesQuery()) { result in
+            switch result {
                 case .success(let data):
-                    print("Success: \(data)")
+                debugPrint("Data: \(data)")
                 case .failure(let error):
-                    print("Error: \(error)")
+                debugPrint("Error: \(error)")
             }
+            debugPrint("Finished execution!!!")
         }
     }
 
