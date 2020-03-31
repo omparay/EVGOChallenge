@@ -7,6 +7,7 @@
 //
 
 import Apollo
+import Foundation
 import RxSwift
 import RxCocoa
 import UIKit
@@ -21,11 +22,14 @@ class MainViewController: UIViewController {
     @IBOutlet weak var resultsTableView: UITableView!
 
     //Properties
-    let disposebag = DisposeBag()
-    let viewModel = MainViewModel()
+    let disposeBag = DisposeBag()
+    lazy var viewModel = MainViewModel(
+        criteriaSelection: criteriaSegmentedControl.rx.selectedSegmentIndex.asDriver(),
+        searchText: searchTextField.rx.text.orEmpty.asDriver())
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        bind()
 
         Network.shared.apollo.fetch(query: LaunchesByYearQuery(year: "15")) { result in
             switch result {
@@ -45,6 +49,36 @@ class MainViewController: UIViewController {
         }
     }
 
+    func bind(){
+        viewModel.searchByMissionResults.subscribe(
+            onNext: { (results) in
+                guard let launches = results.launchesPast else { return }
+                for item in launches{
+                    debugPrint("Date: \(String(describing: item?.launchDateUtc)) Name: \(String(describing: item?.missionName))")
+                }
+        },
+            onError: { (error) in
+        }).disposed(by: disposeBag)
 
+        viewModel.searchByRocketResults.subscribe(
+            onNext: { (results) in
+                guard let launches = results.launchesPast else { return }
+                for item in launches{
+                    debugPrint("Date: \(String(describing: item?.launchDateUtc)) Name: \(String(describing: item?.missionName))")
+                }
+        },
+            onError: { (error) in
+        }).disposed(by: disposeBag)
+
+        viewModel.searchByYearResults.subscribe(
+            onNext: { (results) in
+                guard let launches = results.launchesPast else { return }
+                for item in launches{
+                    debugPrint("Date: \(String(describing: item?.launchDateUtc)) Name: \(String(describing: item?.missionName))")
+                }
+        },
+            onError: { (error) in
+        }).disposed(by: disposeBag)
+    }
 }
 
