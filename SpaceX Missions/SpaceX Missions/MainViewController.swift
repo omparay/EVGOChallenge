@@ -10,6 +10,7 @@ import Apollo
 import Foundation
 import RxSwift
 import RxCocoa
+import SafariServices
 import UIKit
 
 class MainViewController: UIViewController {
@@ -37,15 +38,19 @@ class MainViewController: UIViewController {
         viewModel.searchResults.bind(to: resultsTableView.rx.items(cellIdentifier: "LaunchCell")){
             row, model, cell in
             debugPrint("\(model.missionName):\(model.launchUTC)")
-            guard let launchCell = cell as? LaunchCell else {
-                debugPrint("Stupid return!!!")
-                return
-            }
+            guard let launchCell = cell as? LaunchCell else { return }
             launchCell.missionLabel.text = "Mission: \(model.missionName)"
             launchCell.dateLabel.text = "Date: \(model.launchUTC)"
             launchCell.rocketLabel.text = "Rocket: \(model.rocketName)"
             launchCell.videoLink.setTitle("\(model.videoLink)", for: .normal)
         }.disposed(by: disposeBag)
+
+        resultsTableView.rx.modelSelected(LaunchData.self).map {
+            URL(string: $0.videoLink)
+        }.subscribe(onNext: { (link) in
+            guard let vidlink = link else { return }
+            self.present(SFSafariViewController(url: vidlink), animated: true, completion: nil)
+            }).disposed(by: disposeBag)
     }
 }
 
