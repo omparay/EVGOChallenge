@@ -23,6 +23,7 @@ class MainViewController: UIViewController {
 
     //Properties
     let disposeBag = DisposeBag()
+
     lazy var viewModel = MainViewModel(
         criteriaSelection: criteriaSegmentedControl.rx.selectedSegmentIndex.asDriver(),
         searchText: searchTextField.rx.text.orEmpty.asDriver())
@@ -30,55 +31,21 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         bind()
-
-        Network.shared.apollo.fetch(query: LaunchesByYearQuery(year: "15")) { result in
-            switch result {
-                case .success(let data):
-                debugPrint("Data: \(data)")
-                guard let resultData = data.data, let launches = resultData.launchesPast else {
-                    debugPrint("Error decoding json!!!")
-                    return
-                }
-                for item in launches{
-                    debugPrint("Date: \(String(describing: item?.launchDateUtc)) Name: \(String(describing: item?.missionName))")
-                }
-                case .failure(let error):
-                debugPrint("Error: \(error)")
-            }
-            debugPrint("Finished execution!!!")
-        }
     }
 
     func bind(){
-        viewModel.searchByMissionResults.subscribe(
-            onNext: { (results) in
-                guard let launches = results.launchesPast else { return }
-                for item in launches{
-                    debugPrint("Date: \(String(describing: item?.launchDateUtc)) Name: \(String(describing: item?.missionName))")
-                }
-        },
-            onError: { (error) in
-        }).disposed(by: disposeBag)
-
-        viewModel.searchByRocketResults.subscribe(
-            onNext: { (results) in
-                guard let launches = results.launchesPast else { return }
-                for item in launches{
-                    debugPrint("Date: \(String(describing: item?.launchDateUtc)) Name: \(String(describing: item?.missionName))")
-                }
-        },
-            onError: { (error) in
-        }).disposed(by: disposeBag)
-
-        viewModel.searchByYearResults.subscribe(
-            onNext: { (results) in
-                guard let launches = results.launchesPast else { return }
-                for item in launches{
-                    debugPrint("Date: \(String(describing: item?.launchDateUtc)) Name: \(String(describing: item?.missionName))")
-                }
-        },
-            onError: { (error) in
-        }).disposed(by: disposeBag)
+        viewModel.searchResults.bind(to: resultsTableView.rx.items(cellIdentifier: "LaunchCell")){
+            row, model, cell in
+            debugPrint("\(model.missionName):\(model.launchUTC)")
+            guard let launchCell = cell as? LaunchCell else {
+                debugPrint("Stupid return!!!")
+                return
+            }
+            launchCell.missionLabel.text = "Mission: \(model.missionName)"
+            launchCell.dateLabel.text = "Date: \(model.launchUTC)"
+            launchCell.rocketLabel.text = "Rocket: \(model.rocketName)"
+            launchCell.videoLink.setTitle("\(model.videoLink)", for: .normal)
+        }.disposed(by: disposeBag)
     }
 }
 

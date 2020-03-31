@@ -14,9 +14,7 @@ import RxCocoa
 class MainViewModel {
 
     //Properties
-    lazy private(set) var searchByMissionResults = PublishSubject<LaunchesByMissionQuery.Data>()
-    lazy private(set) var searchByRocketResults = PublishSubject<LaunchesByRocketQuery.Data>()
-    lazy private(set) var searchByYearResults = PublishSubject<LaunchesByYearQuery.Data>()
+    lazy private(set) var searchResults = BehaviorRelay<[LaunchData]>(value: [])
 
     init(
         criteriaSelection: Driver<Int>,
@@ -29,30 +27,51 @@ class MainViewModel {
                     Network.shared.apollo.fetch(query: LaunchesByMissionQuery(mission: searchCriteria.1)){ result in
                         switch result{
                             case .success(let launchesByMissionResult):
-                                guard let data = launchesByMissionResult.data else { return }
-                                self.searchByMissionResults.on(.next(data))
-                            case .failure(let error):
-                                self.searchByMissionResults.onError(error)
+                                guard let resultData = launchesByMissionResult.data, let results = resultData.launchesPast else { return }
+                                var converted = [LaunchData]()
+                                for item in results {
+                                    if let mission = item?.missionName, let rocket = item?.rocket?.rocketName, let dateutc = item?.launchDateUtc, let vidlink = item?.links?.videoLink {
+                                        let launchData = LaunchData(missionName: mission, rocketName: rocket, launchUTC: dateutc, videoLink: vidlink)
+                                        converted.append(launchData)
+                                    } else { continue }
+                                }
+                                self.searchResults.accept(converted)
+                            case .failure:
+                                break
                         }
                     }
                     case 1:
                         Network.shared.apollo.fetch(query: LaunchesByRocketQuery(name: searchCriteria.1)){ result in
                             switch result{
                                 case .success(let launchesByRocketResult):
-                                    guard let data = launchesByRocketResult.data else { return }
-                                    self.searchByRocketResults.on(.next(data))
-                                case .failure(let error):
-                                    self.searchByMissionResults.onError(error)
+                                    guard let resultData = launchesByRocketResult.data, let results = resultData.launchesPast else { return }
+                                    var converted = [LaunchData]()
+                                    for item in results {
+                                        if let mission = item?.missionName, let rocket = item?.rocket?.rocketName, let dateutc = item?.launchDateUtc, let vidlink = item?.links?.videoLink {
+                                            let launchData = LaunchData(missionName: mission, rocketName: rocket, launchUTC: dateutc, videoLink: vidlink)
+                                            converted.append(launchData)
+                                        } else { continue }
+                                    }
+                                    self.searchResults.accept(converted)
+                                case .failure:
+                                    break
                             }
                     }
                     default:
                         Network.shared.apollo.fetch(query: LaunchesByYearQuery(year: searchCriteria.1)) { result in
                             switch result {
                                 case .success(let launchesByYearResult):
-                                    guard let data = launchesByYearResult.data else { return }
-                                    self.searchByYearResults.on(.next(data))
-                                case .failure(let error):
-                                    self.searchByYearResults.onError(error)
+                                    guard let resultData = launchesByYearResult.data, let results = resultData.launchesPast else { return }
+                                    var converted = [LaunchData]()
+                                    for item in results {
+                                        if let mission = item?.missionName, let rocket = item?.rocket?.rocketName, let dateutc = item?.launchDateUtc, let vidlink = item?.links?.videoLink {
+                                            let launchData = LaunchData(missionName: mission, rocketName: rocket, launchUTC: dateutc, videoLink: vidlink)
+                                            converted.append(launchData)
+                                        } else { continue }
+                                    }
+                                    self.searchResults.accept(converted)
+                                case .failure:
+                                    break
                             }
                         }
                     break
